@@ -1,13 +1,7 @@
-# Sample Hardhat Project
+# Staking Smartcontract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This is a staking smartcontract where user can stake, unstake and claim their rewards.
 
-Try running some of the following tasks:
+## Deployed contracts to mumbai testnet:
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+Contract address: 0x11D88a9459Cb2E63648FC0e99866A8Df6687949d
