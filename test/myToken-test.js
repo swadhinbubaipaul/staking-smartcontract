@@ -1,4 +1,5 @@
 const { ethers } = require("hardhat");
+const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
 
@@ -23,7 +24,9 @@ describe("MyToken", function () {
 			it("should stake token amount", async function () {
 				const { myToken, depositor } = await loadFixture(deployContracts);
 				const before = await myToken.balanceOf(depositor.address);
-				await myToken.stake("100000000000000000");
+				await expect(myToken.stake("100000000000000000"))
+					.to.emit(myToken, "Stake")
+					.withArgs(depositor.address, anyValue, "100000000000000000");
 				const after = await myToken.balanceOf(depositor.address);
 				expect(await myToken.getStakedAmount()).to.equal("100000000000000000");
 				expect(await myToken.balanceOf(myToken.address)).to.equal(
@@ -52,7 +55,9 @@ describe("MyToken", function () {
 				const { myToken, depositor } = await loadFixture(deployContracts);
 				await myToken.stake("100000000000000000");
 				const before = await myToken.balanceOf(depositor.address);
-				await myToken.unstake("100000000000000000");
+				await expect(myToken.unstake("100000000000000000"))
+					.to.emit(myToken, "Unstake")
+					.withArgs(depositor.address, anyValue, "100000000000000000");
 				const after = await myToken.balanceOf(depositor.address);
 				expect(await myToken.getStakedAmount()).to.equal("0");
 				expect(await myToken.balanceOf(myToken.address)).to.equal("0");
@@ -82,7 +87,9 @@ describe("MyToken", function () {
 				await myToken.stake("100000000000000000");
 				expect(await myToken.balanceOf(depositor.address)).to.equal(0);
 				const before = await myToken.balanceOf(depositor.address);
-				await myToken.claim();
+				await expect(myToken.claim())
+					.to.emit(myToken, "Claim")
+					.withArgs(depositor.address, anyValue, anyValue);
 				const after = await myToken.balanceOf(depositor.address);
 				expect(after.sub(before)).gt("0");
 			});

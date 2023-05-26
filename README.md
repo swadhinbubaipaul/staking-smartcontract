@@ -4,4 +4,4 @@ This is a staking smartcontract where user can stake, unstake and claim their re
 
 ## Deployed contracts to mumbai testnet:
 
-Contract address: 0x11D88a9459Cb2E63648FC0e99866A8Df6687949d
+Contract address: 0xC611bCC847FCC1cB4486563ab2196278A8477695

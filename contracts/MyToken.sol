@@ -4,6 +4,25 @@ pragma solidity ^0.8.18;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract MyToken is ERC20 {
+    // Events
+    event Stake(
+        address indexed account,
+        uint256 indexed timestamp,
+        uint256 amount
+    );
+
+    event Unstake(
+        address indexed account,
+        uint256 indexed timestamp,
+        uint256 amount
+    );
+
+    event Claim(
+        address indexed account,
+        uint256 indexed timestamp,
+        uint256 amount
+    );
+
     // Store staking information for each user
     struct StakeInfo {
         uint256 amount;
@@ -35,6 +54,7 @@ contract MyToken is ERC20 {
         }
         stakingInfo[msg.sender].timestamp = block.timestamp;
         stakingInfo[msg.sender].amount += amount;
+        emit Stake(msg.sender, block.timestamp, amount);
     }
 
     function unstake(uint256 amount) external {
@@ -46,6 +66,7 @@ contract MyToken is ERC20 {
         claim();
         stakingInfo[msg.sender].amount -= amount;
         _transfer(address(this), msg.sender, amount);
+        emit Unstake(msg.sender, block.timestamp, amount);
     }
 
     function claim() public {
@@ -57,6 +78,7 @@ contract MyToken is ERC20 {
             REWARD_RATE) / (100 * 365 days);
         stakingInfo[msg.sender].timestamp = block.timestamp;
         _mint(msg.sender, rewards);
+        emit Claim(msg.sender, block.timestamp, rewards);
     }
 
     // getter functions
